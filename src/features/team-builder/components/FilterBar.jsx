@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { POKEMON_TYPES } from '../../config/pokemons.config';
+import { POKEMON_TYPES } from '../../../config/pokemons.config';
 
 export default function FilterBar({ searchTerm, onSearchChange, selectedType, onTypeChange }) {
   return (

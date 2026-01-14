@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import FilterBar from './FilterBar';
-import DraftPreview from './DraftPreview';
-import PokemonGrid from './PokemonGrid';
+import FilterBar from './components/FilterBar';
+import DraftPreview from './components/DraftPreview';
+import PokemonGrid from './components/PokemonGrid';
 
 export default function TeamBuilder() {
   const [searchTerm, setSearchTerm] = useState('');

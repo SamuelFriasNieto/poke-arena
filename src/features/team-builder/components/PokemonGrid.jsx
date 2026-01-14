@@ -3,8 +3,8 @@ import {
   usePokemonList,
   useMultiplePokemonDetails,
   usePokemonByType,
-} from "../../hooks/usePokemon";
-import { useTeamStore, selectIsDraftFull } from '../../store/useTeamStore';
+} from "../../../hooks/usePokemon";
+import { useTeamStore, selectIsDraftFull } from '../../../store/useTeamStore';
 import PokemonCard from "./PokemonCard";
 import PokemonCardSkeleton from "./PokemonCardSkeleton";
 

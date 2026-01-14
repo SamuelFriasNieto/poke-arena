@@ -1,11 +1,33 @@
-import React from "react";
-import { TYPE_COLORS } from "@/config/pokemons.config";
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
-const PokemonCardDraft = ({ pokemon, removePokemon }) => {
+import { TYPE_COLORS } from '../../../config/pokemons.config';
+
+export default function SortablePokemonCard({ pokemon, onRemove }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: pokemon.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   return (
     <div
-      key={pokemon.id}
-      className="relative border border-gray-800 rounded-lg p-3 group hover:bg-gray-750 transition-colors"
+      ref={setNodeRef}
+      style={style}
+      className={`relative border border-gray-800 rounded-lg p-3 group hover:bg-gray-750 transition-colors ${
+        isDragging ? 'z-50 cursor-grabbing' : 'cursor-grab'
+      }`}
+      {...attributes}
+      {...listeners}
     >
       <img
         src={pokemon.sprite}
@@ -32,7 +54,7 @@ const PokemonCardDraft = ({ pokemon, removePokemon }) => {
       </div>
 
       <button
-        onClick={() => removePokemon(pokemon.id)}
+        onClick={() => onRemove(pokemon.id)}
         className="absolute top-1 right-1 bg-red-600 hover:bg-red-700 
                     text-white rounded-full w-6 h-6 flex items-center justify-center 
                     opacity-0 group-hover:opacity-100 transition-opacity"
@@ -42,6 +64,4 @@ const PokemonCardDraft = ({ pokemon, removePokemon }) => {
       </button>
     </div>
   );
-};
-
-export default PokemonCardDraft;
+}

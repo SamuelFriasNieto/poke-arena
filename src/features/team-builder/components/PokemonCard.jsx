@@ -1,4 +1,4 @@
-import { TYPE_COLORS } from '../../config/pokemons.config';
+import { TYPE_COLORS } from '../../../config/pokemons.config';
 
 const PokemonStats = [
   'HP',

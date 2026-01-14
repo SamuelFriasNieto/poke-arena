@@ -1,11 +1,11 @@
 import { MdCatchingPokemon } from "react-icons/md";
-import { FaTrashAlt, FaSave } from "react-icons/fa";
+import { FaTrashAlt, FaSave, FaRandom } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useState } from "react";
 
-import { useTeamStore, selectIsDraftEmpty } from '../../store/useTeamStore';
+import { useTeamStore, selectIsDraftEmpty } from '../../../store/useTeamStore';
 import { AppAlertDialog } from "@/components/AppAlertDialog";
-import PokemonCardDraft from "./components/PokemonCardDraft";
+import SortableTeamList from "./SortableTeamList";
 
 export default function DraftPreview() {
   const currentDraft = useTeamStore((state) => state.currentDraft);
@@ -13,6 +13,7 @@ export default function DraftPreview() {
   const removePokemon = useTeamStore((state) => state.removePokemonFromDraft);
   const saveTeam = useTeamStore((state) => state.saveTeam);
   const discardDraft = useTeamStore((state) => state.discardDraft);
+  const reorderDraft = useTeamStore((state) => state.reorderDraft);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [teamName, setTeamName] = useState('');
@@ -36,6 +37,20 @@ export default function DraftPreview() {
     discardDraft();
   };
 
+  const handleRandomSort = () => {
+    const shuffled = [...currentDraft].sort(() => Math.random() - 0.5);
+    reorderDraft(shuffled);
+  };
+
+  const handleSortByStat = (statName) => {
+    const sorted = [...currentDraft].sort((a, b) => {
+      const statA = a.stats.find(s => s.stat.name === statName)?.base_stat || 0;
+      const statB = b.stats.find(s => s.stat.name === statName)?.base_stat || 0;
+      return statB - statA; 
+    });
+    reorderDraft(sorted);
+  };
+
   return (
     <div className="bg-card border border-gray-700 rounded-lg p-6">
       <div className="flex items-center justify-between mb-4">
@@ -53,7 +68,9 @@ export default function DraftPreview() {
               className={`w-3 h-3 rounded-full flex items-center ${
                 index < currentDraft.length ? '' : 'bg-gray-700'
               }`}
-            >{index < currentDraft.length && <MdCatchingPokemon className="w-full text-primary"/>}</div>
+            >
+              {index < currentDraft.length && <MdCatchingPokemon className="w-full text-primary"/>}
+            </div>
           ))}
         </div>
       </div>
@@ -64,20 +81,38 @@ export default function DraftPreview() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
-            {currentDraft.map((pokemon) => (
-              <PokemonCardDraft key={pokemon.id} pokemon={pokemon} removePokemon={removePokemon} />
-            ))}
-
-            {[...Array(6 - currentDraft.length)].map((_, index) => (
-              <div
-                key={`empty-${index}`}
-                className="bg-gray-800/50 border-2 border-dashed border-gray-700 
-                  rounded-lg aspect-square flex items-center justify-center"
+          <div className="mb-4 flex gap-2">
+            <button
+              onClick={handleRandomSort}
+              className="flex items-center gap-2 px-3 py-2 bg-gray-700 hover:bg-gray-600 
+                text-white text-sm rounded-lg transition-colors"
+            >
+              <FaRandom className="text-xs" />
+              Shuffle
+            </button>
+            
+            <div className="flex items-center gap-2">
+              <select
+                onChange={(e) => handleSortByStat(e.target.value)}
+                defaultValue=""
+                className="px-3 py-2 bg-gray-700 hover:bg-gray-600 text-white text-sm 
+                  rounded-lg transition-colors border-none cursor-pointer"
               >
-                <span className="text-4xl text-gray-700">+</span>
-              </div>
-            ))}
+                <option className="text-accent" value="" disabled>Sort by stat</option>
+                <option value="hp">HP</option>
+                <option value="attack">Attack</option>
+                <option value="defense">Defense</option>
+                <option value="speed">Speed</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <SortableTeamList
+              pokemon={currentDraft}
+              onReorder={reorderDraft}
+              onRemove={removePokemon}
+            />
           </div>
 
           <div className="mb-4">
@@ -90,9 +125,8 @@ export default function DraftPreview() {
               placeholder="Enter your team name..."
               value={teamName}
               onChange={(e) => setTeamName(e.target.value)}
-              className="w-full px-4 py-2  border border-gray-700 rounded-lg 
-                placeholder-gray-500 focus:outline-none focus:ring-2 
-                focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-700 rounded-lg 
+                placeholder-gray-500"
             />
           </div>
 
@@ -115,17 +149,13 @@ export default function DraftPreview() {
             </button>
           </div>
 
-          <p className="text-gray-500 text-xs text-center mt-4">
-            Your draft is automatically saved in your browser
-          </p>
-
           <AppAlertDialog
             open={isDialogOpen}
             title={"¿Delete draft?"} 
             onOpenChange={setIsDialogOpen}
             onActionClick={handleDiscardDraft}
             isActionDestructive={true}
-            />
+          />
         </>
       )}
     </div>
