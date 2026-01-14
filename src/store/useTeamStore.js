@@ -18,7 +18,6 @@ export const useTeamStore = create(
     (set, get) => ({
       currentDraft: [],
       savedTeams: [],
-
       //------ ACCIONES DE GESTION DE BORRADOR -----
 
       addPokemonToDraft: (pokemon) => {
@@ -108,8 +107,17 @@ export const useTeamStore = create(
       },
     }),
     {
-      name: "pokemon-team-storage"
+      name: "pokemon-team-storage",
     }
   )
 );
 
+export const selectIsDraftEmpty = (state) => state.currentDraft.length === 0;
+
+export const selectSavedTeamsCount = (state) => state.savedTeams.length;
+
+export const selectDraftPokemonIds = (state) => state.currentDraft.map((p) => p.id);
+
+export const selectDraftSize = (state) => state.currentDraft.length;
+
+export const selectIsDraftFull = (state) => state.currentDraft.length >= MAX_TEAM_SIZE;

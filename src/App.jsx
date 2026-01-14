@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ToastContainer } from 'react-toastify';
 
 import TeamBuilder from './features/team-builder/TeamBuilder';
 import Battle from './features/battle/Battle';
@@ -31,6 +32,7 @@ function App() {
           </main>
         </div>
       </BrowserRouter>
+      <ToastContainer />
     </QueryClientProvider>
   );
 }

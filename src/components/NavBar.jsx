@@ -12,7 +12,7 @@ const NavBar = () => {
   const currentPath = useLocation().pathname;
   const pageTitle = PageTittles[currentPath] || "";
   return (
-    <nav className="bg-background/80 backdrop-blur-md shadow-sm">
+    <nav className="bg-background/80 backdrop-blur-md shadow-sm sticky top-0 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex  h-16 space-x-8 justify-between items-center">
           <Link to="/" className="text-3xl px-1 leading-none font-bold">

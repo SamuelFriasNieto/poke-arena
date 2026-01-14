@@ -1,23 +1,44 @@
-import { usePokemonList, usePokemonDetails, useMultiplePokemonDetails, usePokemonQueries } from "../../hooks/usePokemon";
+import { useState } from 'react';
+import FilterBar from './FilterBar';
+import DraftPreview from './DraftPreview';
+import PokemonGrid from './PokemonGrid';
 
 export default function TeamBuilder() {
-  const { data: pokemonList, isLoading: listLoading } = usePokemonList({
-    limit: 10,
-    offset: 0,
-  });
-  console.log("LISTA POKEMON", pokemonList);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedType, setSelectedType] = useState('');
 
-  const { data: pikachu, isLoading: pikachuLoading } = usePokemonDetails("pikachu");
-  console.log("DETALLES PIKACHU", pikachu);
-
-  const {data: pokemonsDetails, isLoading: pokemonsLoading} = useMultiplePokemonDetails(["bulbasaur", "charmander", "squirtle"]);
-  console.log("VARIOS POKEMON:", pokemonsDetails);
-
-  const { data: pokemonQueriesData, isLoading: pokemonQueriesLoading } = usePokemonQueries(["eevee", "jigglypuff", "meowth"]);
-  console.log("QUERIES POKEMON:", pokemonQueriesData);
   return (
-    <div className="px-4 py-6">
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">Team Builder</h1>
+    <div className="container mx-auto px-4 py-6">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold mb-2">
+          Team Builder
+        </h1>
+        <p className="text-gray-400">
+          Search and select up to 6 Pokemon to build your dream team
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-1">
+          <div className="lg:sticky lg:top-20">
+            <DraftPreview />
+          </div>
+        </div>
+
+        <div className="lg:col-span-2">
+          <FilterBar
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            selectedType={selectedType}
+            onTypeChange={setSelectedType}
+          />
+
+          <PokemonGrid
+            searchTerm={searchTerm}
+            selectedType={selectedType}
+          />
+        </div>
+      </div>
     </div>
   );
 }
