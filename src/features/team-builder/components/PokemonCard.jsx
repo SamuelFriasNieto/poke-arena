@@ -1,19 +1,10 @@
-import { TYPE_COLORS } from '../../../config/pokemons.config';
-
-const PokemonStats = [
-  'HP',
-  'ATK',
-  'DEF',
-  'SPD',
-]
+import { TYPE_COLORS, POKEMON_STATS } from '@/config/pokemons.config';
+import { extractPokemonStats } from '@/lib/pokemonHelpers';
 
 export default function PokemonCard({ pokemon, onAction, actionLabel, disabled = false, mode = 'search' }) {
   const imageUrl = pokemon.sprites.other['official-artwork'].front_default;
   
-  const hp = pokemon.stats.find(s => s.stat.name === 'hp')?.base_stat || 0;
-  const attack = pokemon.stats.find(s => s.stat.name === 'attack')?.base_stat || 0;
-  const defense = pokemon.stats.find(s => s.stat.name === 'defense')?.base_stat || 0;
-  const speed = pokemon.stats.find(s => s.stat.name === 'speed')?.base_stat || 0;
+  const { hp, attack, defense, speed } = extractPokemonStats(pokemon);
 
   return (
     <div className={`bg-card border rounded-lg p-4 transition-all hover:shadow-lg ${
@@ -48,7 +39,7 @@ export default function PokemonCard({ pokemon, onAction, actionLabel, disabled =
       </div>
 
       <div className="grid grid-cols-2 gap-2 mb-4 text-sm">
-        {PokemonStats.map((stat) => {
+        {POKEMON_STATS.map((stat) => {
           return (<div key={stat} className="flex justify-between border border-primary px-2 py-1 rounded ">
             <span className="font-medium">{stat}:</span>
             <span>

@@ -1,25 +1,34 @@
 import { MdCatchingPokemon } from "react-icons/md";
 import { FaTrashAlt, FaSave, FaRandom } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import { useTeamStore, selectIsDraftEmpty } from '../../../store/useTeamStore';
+import { useTeamStore, selectIsDraftEmpty } from '@/store/useTeamStore';
 import { AppAlertDialog } from "@/components/AppAlertDialog";
-import SortableTeamList from "./SortableTeamList";
+import SortableTeamList from "@/features/team-builder/components/SortableTeamList";
 
 export default function DraftPreview() {
   const currentDraft = useTeamStore((state) => state.currentDraft);
   const isDraftEmpty = useTeamStore(selectIsDraftEmpty);
-  const removePokemon = useTeamStore((state) => state.removePokemonFromDraft);
   const saveTeam = useTeamStore((state) => state.saveTeam);
   const discardDraft = useTeamStore((state) => state.discardDraft);
   const reorderDraft = useTeamStore((state) => state.reorderDraft);
+  const editingTeamId = useTeamStore((state) => state.editingTeamId);
+  const savedTeams = useTeamStore((state) => state.savedTeams);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [teamName, setTeamName] = useState('');
 
-  const savedTeams = useTeamStore((state) => state.savedTeams);
-  console.log(savedTeams);
+  useEffect(() => {
+    if (editingTeamId) {
+      const editingTeam = savedTeams.find(t => t.id === editingTeamId);
+      if (editingTeam) {
+        setTeamName(editingTeam.name);
+      }
+    } else {
+      setTeamName('');
+    }
+  }, [editingTeamId, savedTeams]);
 
   const handleSaveTeam = () => {
     if (!teamName.trim()) {
@@ -28,7 +37,8 @@ export default function DraftPreview() {
     }
     const savedTeam = saveTeam(teamName);
     if (savedTeam) {
-      toast.success(`Team "${teamName}" saved successfully!`);
+      const action = editingTeamId ? 'updated' : 'saved';
+      toast.success(`Team "${teamName}" ${action} successfully!`);
       setTeamName('');
     }
   };
@@ -55,7 +65,9 @@ export default function DraftPreview() {
     <div className="bg-card border border-gray-700 rounded-lg p-6">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-2xl font-bold">Your Team</h2>
+          <h2 className="text-2xl font-bold">
+            {editingTeamId ? 'Edit Team' : 'Your Team'}
+          </h2>
           <p className="text-gray-400 text-sm mt-1">
             {currentDraft.length}/6 Pokemon selected
           </p>
@@ -111,7 +123,6 @@ export default function DraftPreview() {
             <SortableTeamList
               pokemon={currentDraft}
               onReorder={reorderDraft}
-              onRemove={removePokemon}
             />
           </div>
 
@@ -138,20 +149,20 @@ export default function DraftPreview() {
                 py-3 px-4 rounded-lg transition-colors disabled:opacity-50 
                 disabled:cursor-not-allowed disabled:hover:bg-primary flex items-center justify-center"
             >
-              <FaSave className="inline mr-2" /> Save Team
+              <FaSave className="inline mr-2" /> {editingTeamId ? 'Update Team' : 'Save Team'}
             </button>
             <button
               onClick={() => setIsDialogOpen(true)}
               className="bg-gray-700 hover:bg-gray-600 text-white font-semibold 
                 py-3 px-4 rounded-lg transition-colors flex items-center"
             >
-              <FaTrashAlt className="inline mr-2" /> Discard
+              <FaTrashAlt className="inline mr-2" /> {editingTeamId ? 'Cancel' : 'Discard'}
             </button>
           </div>
 
           <AppAlertDialog
             open={isDialogOpen}
-            title={"¿Delete draft?"} 
+            title={editingTeamId ? "Cancel editing?" : "Delete draft?"} 
             onOpenChange={setIsDialogOpen}
             onActionClick={handleDiscardDraft}
             isActionDestructive={true}

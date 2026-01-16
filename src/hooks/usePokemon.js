@@ -4,7 +4,7 @@ import {
   fetchPokemonDetails,
   fetchMultiplePokemonDetails,
   fetchPokemonByType,
-} from "../api/pokemonApi";
+} from "@/api/pokemonApi";
 
 export const usePokemonList = ({
   limit = 20,

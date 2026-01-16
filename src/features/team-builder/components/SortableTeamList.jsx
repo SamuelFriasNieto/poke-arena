@@ -6,11 +6,12 @@ import {
   arrayMove,
   SortableContext,
 } from "@dnd-kit/sortable";
-import SortablePokemonCard from "./SortablePokemonCard";
+import SortablePokemonCard from "@/features/team-builder/components/SortablePokemonCard";
 import { useTeamStore } from "@/store/useTeamStore";
 
-export default function SortableTeamList({ pokemon, onReorder, onRemove }) {
-  const currentDraft = useTeamStore((state) => state.currentDraft);
+
+export default function SortableTeamList({ pokemon, onReorder }) {
+    const removePokemon = useTeamStore((state) => state.removePokemonFromDraft);
 
 
   const handleDragEnd = (event) => {
@@ -42,11 +43,11 @@ export default function SortableTeamList({ pokemon, onReorder, onRemove }) {
             <SortablePokemonCard
               key={poke.id}
               pokemon={poke}
-              onRemove={onRemove}
+              onRemove={removePokemon}
             />
           ))}
 
-          {[...Array(6 - currentDraft.length)].map((_, index) => (
+          {[...Array(6 - pokemon.length)].map((_, index) => (
             <div
               key={`empty-${index}`}
               className="bg-gray-800/50 border-2 border-dashed border-gray-700 

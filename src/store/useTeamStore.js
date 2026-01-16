@@ -18,6 +18,7 @@ export const useTeamStore = create(
     (set, get) => ({
       currentDraft: [],
       savedTeams: [],
+      editingTeamId: null,
       //------ ACCIONES DE GESTION DE BORRADOR -----
 
       addPokemonToDraft: (pokemon) => {
@@ -57,13 +58,13 @@ export const useTeamStore = create(
       },
 
       discardDraft: () => {
-        set({ currentDraft: [] });
+        set({ currentDraft: [], editingTeamId: null });
       },
 
       //------ ACCIONES DE GESTION DE EQUIPOS-----
 
       saveTeam: (name) => {
-        const { currentDraft, savedTeams } = get();
+        const { currentDraft, savedTeams, editingTeamId } = get();
 
         if (currentDraft.length === 0) {
           console.warn("Cannot save team: Draft is empty");
@@ -75,6 +76,22 @@ export const useTeamStore = create(
           return null;
         }
 
+        if (editingTeamId) {
+          const updatedTeams = savedTeams.map((team) =>
+            team.id === editingTeamId
+              ? { ...team, name: name.trim(), pokemons: [...currentDraft] }
+              : team
+          );
+
+          set({
+            savedTeams: updatedTeams,
+            currentDraft: [],
+            editingTeamId: null,
+          });
+
+          return updatedTeams.find((t) => t.id === editingTeamId);
+        }
+
         const newTeam = {
           id: generateTeamId(),
           name: name.trim(),
@@ -83,7 +100,8 @@ export const useTeamStore = create(
 
         set({
           savedTeams: [...savedTeams, newTeam],
-          currentDraft: [], 
+          currentDraft: [],
+          editingTeamId: null,
         });
 
         return newTeam;
@@ -102,6 +120,7 @@ export const useTeamStore = create(
         if (team) {
           set({
             currentDraft: [...team.pokemons],
+            editingTeamId: teamId,
           });
         }
       },

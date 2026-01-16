@@ -1,7 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-import { TYPE_COLORS } from '../../../config/pokemons.config';
+import { TYPE_COLORS } from '@/config/pokemons.config';
 
 export default function SortablePokemonCard({ pokemon, onRemove }) {
   const {
@@ -43,7 +43,7 @@ export default function SortablePokemonCard({ pokemon, onRemove }) {
         {pokemon.types.map((typeInfo) => (
           <span
             key={typeInfo.type.name}
-            className={`text-[10px] bg-gray-700 text-white px-2 py-0.5 
+            className={`text-[10px] text-white px-2 py-0.5 
                         rounded-full capitalize ${
                           TYPE_COLORS[typeInfo.type.name]
                         }`}
@@ -54,7 +54,11 @@ export default function SortablePokemonCard({ pokemon, onRemove }) {
       </div>
 
       <button
-        onClick={() => onRemove(pokemon.id)}
+        onClick={(e) => {
+          e.stopPropagation();
+          onRemove(pokemon.id);
+        }}
+        onPointerDown={(e) => e.stopPropagation()}
         className="absolute top-1 right-1 bg-red-600 hover:bg-red-700 
                     text-white rounded-full w-6 h-6 flex items-center justify-center 
                     opacity-0 group-hover:opacity-100 transition-opacity"

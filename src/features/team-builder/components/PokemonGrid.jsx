@@ -1,83 +1,36 @@
-import { useState, useMemo, useEffect, use } from "react";
-import {
-  usePokemonList,
-  useMultiplePokemonDetails,
-  usePokemonByType,
-} from "../../../hooks/usePokemon";
-import { useTeamStore, selectIsDraftFull } from '../../../store/useTeamStore';
-import PokemonCard from "./PokemonCard";
-import PokemonCardSkeleton from "./PokemonCardSkeleton";
-
-const ITEMS_PER_PAGE = 20;
+import PokemonCard from "@/features/team-builder/components/PokemonCard";
+import PokemonCardSkeleton from "@/features/team-builder/components/PokemonCardSkeleton";
+import { ITEMS_PER_PAGE } from "@/config/pokemons.config";
+import { usePokemonGrid } from "@/features/team-builder/hooks/usePokemonGrid";
 
 export default function PokemonGrid({ searchTerm = "", selectedType = "" }) {
-  //------ LOGICA DDE FILTRADO Y PAGINADO
-  const [page, setPage] = useState(0);
 
   const addPokemon = useTeamStore((state) => state.addPokemonToDraft);
   const isDraftFull = useTeamStore(selectIsDraftFull);
   const currentDraft = useTeamStore((state) => state.currentDraft);
-  
-  const isPokemonInDraft = (pokemonId) => {
-    return currentDraft.some((p) => p.id === pokemonId);
-  };
 
-  useEffect(() => {
-    setPage(0);
-  }, [searchTerm, selectedType]);
+  const {
+    detailedPokemon,
+    isDraftFull,
+    addPokemon,
+    isPokemonInDraft,
+    page,
+    setPage,
+    isLoading,
+    totalResults,
+  } = usePokemonGrid({ searchTerm, selectedType, addPokemon, isDraftFull, currentDraft });
 
-  const { data: allPokemonData, isLoading: loadingAll } = usePokemonList({
-    limit: 10000,
-    offset: 0,
-    enabled: !selectedType,
-  });
-
-  const { data: typePokemonData, isLoading: loadingType } = usePokemonByType({
-    selectedType,
-  });
-
-  const rawPokemonList = useMemo(() => {
-    if (selectedType) {
-      return typePokemonData?.pokemon?.map((p) => p.pokemon) || [];
-    } else {
-      return allPokemonData?.results || [];
-    }
-  }, [selectedType, typePokemonData, allPokemonData]);
-
-  const filteredList = useMemo(() => {
-    if (!searchTerm) return rawPokemonList;
-    return rawPokemonList.filter((p) =>
-      p.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [rawPokemonList, searchTerm]);
-
-  const paginatedNames = useMemo(() => {
-    const start = page * ITEMS_PER_PAGE;
-    const end = start + ITEMS_PER_PAGE;
-    return filteredList.slice(start, end).map((p) => p.name);
-  }, [filteredList, page]);
-
-  const { data: detailedPokemon = [], isLoading: loadingDetails } =
-    useMultiplePokemonDetails(paginatedNames, {
-      enabled: paginatedNames.length > 0,
-    });
-
-  //-- LOGICA DE UI
-
-  const totalResults = filteredList.length;
   const totalPages = Math.ceil(totalResults / ITEMS_PER_PAGE);
-  const isLoading = loadingAll || loadingType || loadingDetails;
-
 
   if (isLoading && page === 0) {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[...Array(ITEMS_PER_PAGE)].map((_, index) => (
-            <PokemonCardSkeleton key={index} />
-          ))}
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[...Array(ITEMS_PER_PAGE)].map((_, index) => (
+          <PokemonCardSkeleton key={index} />
+        ))}
+      </div>
     );
-  } 
+  }
 
   if (totalResults === 0 && !isLoading) {
     return <div className="text-center py-12">No Pokemon found.</div>;

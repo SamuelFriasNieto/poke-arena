@@ -3,14 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import { MdCatchingPokemon } from "react-icons/md";
 import { TbUsers } from "react-icons/tb";
 
-const PageTittles = {
+const PAGE_TITLES = {
   "/team-builder": "Build Your Team",
   "/battle": "Combat Arena",
 }
 
 const NavBar = () => {
   const currentPath = useLocation().pathname;
-  const pageTitle = PageTittles[currentPath] || "";
+  const pageTitle = PAGE_TITLES[currentPath] || "";
   return (
     <nav className="bg-background/80 backdrop-blur-md shadow-sm sticky top-0 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

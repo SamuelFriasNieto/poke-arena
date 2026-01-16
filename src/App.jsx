@@ -2,9 +2,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
 
-import TeamBuilder from './features/team-builder/TeamBuilder';
-import Battle from './features/battle/Battle';
-import NavBar from './components/NavBar';
+import TeamBuilder from '@/features/team-builder/TeamBuilder';
+import Battle from '@/features/battle/Battle';
+import NavBar from '@/components/NavBar';
 
 const queryClient = new QueryClient({
   defaultOptions: {

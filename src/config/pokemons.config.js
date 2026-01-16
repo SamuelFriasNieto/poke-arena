@@ -24,3 +24,12 @@ export const POKEMON_TYPES = [
   'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug',
   'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'
 ];
+
+export const POKEMON_STATS = [
+  'HP',
+  'ATK',
+  'DEF',
+  'SPD',
+]
+
+export const ITEMS_PER_PAGE = 20;

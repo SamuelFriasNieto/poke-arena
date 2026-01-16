@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import FilterBar from './components/FilterBar';
-import DraftPreview from './components/DraftPreview';
-import PokemonGrid from './components/PokemonGrid';
+import FilterBar from '@/features/team-builder/components/FilterBar';
+import DraftPreview from '@/features/team-builder/components/DraftPreview';
+import PokemonGrid from '@/features/team-builder/components/PokemonGrid';
+import { useDebounce } from '@/hooks/useDebounce';
 
 export default function TeamBuilder() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('');
+  const debouncedQuery = useDebounce(searchTerm, 300);
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -34,7 +36,7 @@ export default function TeamBuilder() {
           />
 
           <PokemonGrid
-            searchTerm={searchTerm}
+            searchTerm={debouncedQuery}
             selectedType={selectedType}
           />
         </div>
