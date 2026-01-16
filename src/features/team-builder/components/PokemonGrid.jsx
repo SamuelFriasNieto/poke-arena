@@ -11,8 +11,6 @@ export default function PokemonGrid({ searchTerm = "", selectedType = "" }) {
 
   const {
     detailedPokemon,
-    isDraftFull,
-    addPokemon,
     isPokemonInDraft,
     page,
     setPage,
