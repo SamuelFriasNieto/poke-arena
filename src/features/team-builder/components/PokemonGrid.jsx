@@ -2,6 +2,7 @@ import PokemonCard from "@/features/team-builder/components/PokemonCard";
 import PokemonCardSkeleton from "@/features/team-builder/components/PokemonCardSkeleton";
 import { ITEMS_PER_PAGE } from "@/config/pokemons.config";
 import { usePokemonGrid } from "@/features/team-builder/hooks/usePokemonGrid";
+import { useTeamStore, selectIsDraftFull } from "@/store/useTeamStore";
 
 export default function PokemonGrid({ searchTerm = "", selectedType = "" }) {
 
