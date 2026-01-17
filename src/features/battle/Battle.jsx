@@ -29,8 +29,8 @@ export default function Battle() {
 
   const handleEditTeam = (teamId) => {
     loadTeamToDraft(teamId);
-    navigate('/team-builder');
-    toast.info('Team loaded for editing');
+    navigate("/team-builder");
+    toast.info("Team loaded for editing");
   };
 
   const handleStartBattle = () => {
@@ -47,16 +47,19 @@ export default function Battle() {
     const teamA = savedTeams.find((t) => t.id === selectedTeamA);
     const teamB = savedTeams.find((t) => t.id === selectedTeamB);
 
-    const result = resolveBattle(teamA, teamB);
-    setBattleResult(result);
+    try {
+      const result = resolveBattle(teamA, teamB);
+      setBattleResult(result);
+    } catch (error) {
+      toast.error("An error occurred while starting the battle");
+      return;
+    }
   };
 
   if (savedTeams.length === 0) {
     return (
       <div className="px-4 py-6 max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">
-          Battle Arena
-        </h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">Battle Arena</h1>
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
           <p className="text-lg text-yellow-800">
             You need to create and save at least two teams in the Team Builder
@@ -68,9 +71,7 @@ export default function Battle() {
 
   return (
     <div className="px-4 py-6 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">
-          Battle Arena
-      </h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">Battle Arena</h1>
 
       {!battleResult && (
         <div>
@@ -89,7 +90,7 @@ export default function Battle() {
                     disabled={selectedTeamB === team.id}
                     onEdit={() => handleEditTeam(team.id)}
                     onDelete={() => {
-                      setTeamToDelete(team.id)
+                      setTeamToDelete(team.id);
                       setIsDialogOpen(true);
                     }}
                   />
@@ -117,7 +118,7 @@ export default function Battle() {
                     disabled={selectedTeamA === team.id}
                     onEdit={() => handleEditTeam(team.id)}
                     onDelete={() => {
-                      setTeamToDelete(team.id)
+                      setTeamToDelete(team.id);
                       setIsDialogOpen(true);
                     }}
                   />
@@ -134,19 +135,19 @@ export default function Battle() {
               disabled:from-gray-400 disabled:to-gray-400 text-white font-bold flex items-center gap-2
               py-4 px-12 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:cursor-not-allowed text-lg cursor-pointer"
             >
-              <MdCatchingPokemon className="inline" size={25}/> Start Battle
+              <MdCatchingPokemon className="inline" size={25} /> Start Battle
             </button>
           </div>
         </div>
       )}
 
       <AppAlertDialog
-            open={isDialogOpen}
-            title={"Delete team?"} 
-            onOpenChange={setIsDialogOpen}
-            onActionClick={() => handleDeleteTeam(teamToDelete)}
-            isActionDestructive={true}
-          />
+        open={isDialogOpen}
+        title={"Delete team?"}
+        onOpenChange={setIsDialogOpen}
+        onActionClick={() => handleDeleteTeam(teamToDelete)}
+        isActionDestructive={true}
+      />
 
       {battleResult && (
         <div>

@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -25,16 +26,12 @@ export const useTeamStore = create(
         const { currentDraft } = get();
 
         if (currentDraft.length >= MAX_TEAM_SIZE) {
-          console.warn(
-            `Cannot add pokemon: Team is full (max ${MAX_TEAM_SIZE})`
-          );
+          toast.error("Cannot add more Pokémon: Team is full");
           return false;
         }
 
         if (currentDraft.some((p) => p.id === pokemon.id)) {
-          console.warn(
-            `Cannot add pokemon: ${pokemon.name} is already in the team`
-          );
+          toast.error("Cannot add Pokémon: Duplicate detected");
           return false;
         }
 
@@ -67,12 +64,12 @@ export const useTeamStore = create(
         const { currentDraft, savedTeams, editingTeamId } = get();
 
         if (currentDraft.length === 0) {
-          console.warn("Cannot save team: Draft is empty");
+          toast.error("Cannot save team: Draft is empty");
           return null;
         }
 
         if (!name || name.trim().length === 0) {
-          console.warn("Cannot save team: Name is required");
+          toast.error("Cannot save team: Name is required");
           return null;
         }
 

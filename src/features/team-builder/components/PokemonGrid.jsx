@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import PokemonCard from "@/features/team-builder/components/PokemonCard";
 import PokemonCardSkeleton from "@/features/team-builder/components/PokemonCardSkeleton";
 import { ITEMS_PER_PAGE } from "@/config/pokemons.config";
 import { usePokemonGrid } from "@/features/team-builder/hooks/usePokemonGrid";
 import { useTeamStore, selectIsDraftFull } from "@/store/useTeamStore";
+import { toast } from "react-toastify";
 
 export default function PokemonGrid({ searchTerm = "", selectedType = "" }) {
 
@@ -17,7 +19,14 @@ export default function PokemonGrid({ searchTerm = "", selectedType = "" }) {
     setPage,
     isLoading,
     totalResults,
+    isError,
   } = usePokemonGrid({ searchTerm, selectedType, addPokemon, isDraftFull, currentDraft });
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("Failed to load Pokémon. Please try again.");
+    }
+  }, [isError]);
 
   const totalPages = Math.ceil(totalResults / ITEMS_PER_PAGE);
 

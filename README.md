@@ -98,3 +98,7 @@ src/
 - Seleccionar dos equipos guardados para el combate
 - Resultados de batalla con desglose de rondas
 - Editar o eliminar equipos desde la pantalla de batalla
+
+### Siguientes pasos
+- Hacer que el resultado de la batalla no sea directo, si no con control de turnos
+- Añadir multiidioma con i18n

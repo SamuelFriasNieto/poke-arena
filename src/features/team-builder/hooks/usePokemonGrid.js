@@ -18,13 +18,13 @@ export const usePokemonGrid = ({ searchTerm, selectedType, onAddPokemon, isDraft
     setPage(0);
   }, [searchTerm, selectedType]);
 
-  const { data: allPokemonData, isLoading: loadingAll } = usePokemonList({
+  const { data: allPokemonData, isLoading: loadingAll, error: errorAll } = usePokemonList({
     limit: 10000,
     offset: 0,
     enabled: !selectedType,
   });
 
-  const { data: typePokemonData, isLoading: loadingType } = usePokemonByType({
+  const { data: typePokemonData, isLoading: loadingType, error: errorType } = usePokemonByType({
     selectedType,
   });
 
@@ -49,7 +49,7 @@ export const usePokemonGrid = ({ searchTerm, selectedType, onAddPokemon, isDraft
     return filteredList.slice(start, end).map((p) => p.name);
   }, [filteredList, page]);
 
-  const { data: detailedPokemon = [], isLoading: loadingDetails } =
+  const { data: detailedPokemon = [], isLoading: loadingDetails, error: errorDetails } =
     useMultiplePokemonDetails(paginatedNames, {
       enabled: paginatedNames.length > 0,
     });
@@ -63,5 +63,6 @@ export const usePokemonGrid = ({ searchTerm, selectedType, onAddPokemon, isDraft
     setPage,
     totalResults: filteredList.length,
     isLoading: loadingAll || loadingType || loadingDetails,
+    isError: errorAll || errorType || errorDetails,
   };
 };
