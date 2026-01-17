@@ -1,4 +1,3 @@
-import { FaTrophy } from "react-icons/fa";
 import BattleTurns from "@features/battle/components/BattleTurns";
 import BattleResultTeamCard from "@features/battle/components/BattleResultTeamCard";
 import { MdCatchingPokemon } from "react-icons/md";
@@ -35,7 +34,6 @@ export default function BattleDetails({ battleResult }) {
           size={150}
         />
         <h3 className="text-2xl font-bold  flex items-center justify-center gap-2 text">
-          <FaTrophy />
           {battleResult.winner} WINS
         </h3>
         <p className=" mt-2">

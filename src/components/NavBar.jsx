@@ -15,16 +15,16 @@ const NavBar = () => {
     <nav className="bg-background/80 backdrop-blur-md shadow-sm sticky top-0 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex  h-16 space-x-8 justify-between items-center">
-          <Link to="/" className="text-3xl px-1 leading-none font-bold">
+          <Link to="/" className="text-2xl px-1 leading-none font-bold">
             Poke<span className="text-primary">Arena</span>
           </Link>
-          <h2 className="text-lg font-semibold text-muted-foreground">{pageTitle}</h2>
-          <div className="flex gap-4">
+          <h2 className="text-lg hidden sm:block font-semibold text-muted-foreground">{pageTitle}</h2>
+          <div className="flex gap-2 sm:gap-4 items-center">
             <Link
               to="/team-builder"
-              className="inline-flex items-center px-2 py-1 bg-primary rounded-md text-background hover:bg-primary/90"
+              className="inline-flex items-center text-center px-2 py-1 bg-primary rounded-md text-background hover:bg-primary/90"
             >
-              <TbUsers className="mr-1" size={16} />
+              <TbUsers className="mr-1 hidden sm:block" size={16} />
               Team Builder
             </Link>
             <Link

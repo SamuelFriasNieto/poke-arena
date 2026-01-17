@@ -10,9 +10,9 @@ const BattleTurns = ({ battleResult }) => {
           key={round.roundNumber}
           className="bg-gray-100 rounded-lg p-4 shadow-md"
         >
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-4 ">
-              <div className="bg-white px-3 py-1 rounded-md font-semibold">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-4 ">
+              <div className="bg-white text-center px-3 py-1 rounded-md font-semibold">
                 Round {round.roundNumber}
               </div>
 
@@ -45,7 +45,7 @@ const BattleTurns = ({ battleResult }) => {
               <span className="text-gray-500">vs</span>
             </div>
 
-            <div className="flex text-right gap-4 items-center">
+            <div className="flex flex-col sm:flex-row text-right gap-4 items-center ">
               <img
                 src={round.pokemonB.sprite}
                 alt={round.pokemonB.name}
@@ -54,7 +54,7 @@ const BattleTurns = ({ battleResult }) => {
                 }`}
               />
               <div>
-                <div className="flex gap-2 justify-end">
+                <div className="flex gap-2 justify-center sm:justify-end">
                   {round.pokemonB.isWinner && (
                     <FaTrophy className="text-yellow-500 text-2xl" />
                   )}

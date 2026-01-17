@@ -23,7 +23,7 @@ export default function PokemonGrid({ searchTerm = "", selectedType = "" }) {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[...Array(ITEMS_PER_PAGE)].map((_, index) => (
           <PokemonCardSkeleton key={index} />
         ))}
@@ -44,7 +44,7 @@ export default function PokemonGrid({ searchTerm = "", selectedType = "" }) {
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {detailedPokemon.map((pokemon) => (
           <PokemonCard
             key={pokemon.id}
