@@ -9,7 +9,7 @@ export default function BattleDetails({ battleResult }) {
 
   useEffect(() => {
     audioRef.current = new Audio(victoryMusic);
-    audioRef.current.volume = 0.2; 
+    audioRef.current.volume = 0.12; 
     audioRef.current.play().catch(error => {
       console.log("El audio ha fallado", error);
     });
