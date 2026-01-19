@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 
-import TeamBuilder from "@/features/team-builder/TeamBuilder";
-import Battle from "@/features/battle/Battle";
+import TeamBuilderPage from "@/features/team-builder/TeamBuilderPage";
+import BattlePage from "@/features/battle/BattlePage";
 import NavBar from "@/components/NavBar";
 import ErrorBoundary from "./components/ErrorBoundary";
 
@@ -31,8 +31,8 @@ function App() {
                   path="/"
                   element={<Navigate to="/team-builder" replace />}
                 />
-                <Route path="/team-builder" element={<TeamBuilder />} />
-                <Route path="/battle" element={<Battle />} />
+                <Route path="/team-builder" element={<TeamBuilderPage />} />
+                <Route path="/battle" element={<BattlePage />} />
               </Routes>
             </main>
           </div>

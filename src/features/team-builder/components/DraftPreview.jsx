@@ -7,6 +7,25 @@ import { useTeamStore, selectIsDraftEmpty } from '@/store/useTeamStore';
 import { AppAlertDialog } from "@/components/AppAlertDialog";
 import SortableTeamList from "@/features/team-builder/components/SortableTeamList";
 
+const SORT_OPTIONS = [
+  {
+    stat: "HP",
+    value: "hp"
+  },
+  {
+    stat: "ATTACK",
+    value: "attack"
+  },
+  {
+    stat: "DEFENSE",
+    value: "defense"
+  },
+  {
+    stat: "SPEED",
+    value: "speed"
+  },
+]
+
 export default function DraftPreview() {
   const currentDraft = useTeamStore((state) => state.currentDraft);
   const isDraftEmpty = useTeamStore(selectIsDraftEmpty);
@@ -111,10 +130,9 @@ export default function DraftPreview() {
                   rounded-lg transition-colors border-none cursor-pointer"
               >
                 <option className="text-accent" value="" disabled>Sort by stat</option>
-                <option value="hp">HP</option>
-                <option value="attack">Attack</option>
-                <option value="defense">Defense</option>
-                <option value="speed">Speed</option>
+                {SORT_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>{opt.stat}</option>
+                ))}
               </select>
             </div>
           </div>

@@ -4,7 +4,7 @@ import DraftPreview from '@/features/team-builder/components/DraftPreview';
 import PokemonGrid from '@/features/team-builder/components/PokemonGrid';
 import { useDebounce } from '@/hooks/useDebounce';
 
-export default function TeamBuilder() {
+export default function TeamBuilderPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const debouncedQuery = useDebounce(searchTerm, 300);

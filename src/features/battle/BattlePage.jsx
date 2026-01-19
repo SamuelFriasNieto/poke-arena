@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { MdCatchingPokemon } from "react-icons/md";
 import { toast } from "react-toastify";
 
-export default function Battle() {
+export default function BattlePage() {
   const savedTeams = useTeamStore((state) => state.savedTeams);
   const deleteTeam = useTeamStore((state) => state.deleteTeam);
   const loadTeamToDraft = useTeamStore((state) => state.loadTeamToDraft);
