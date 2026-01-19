@@ -2,6 +2,9 @@
 
 Una aplicación en React para construir equipos de Pokémon y simular batallas usando la PokeAPI.
 
+**Live Demo**: [Poke-Arena Web](https://poke-arena-pink.vercel.app/)
+
+
 ### Versiones utilizadas
 
 - **Node.js**: v18
@@ -98,6 +101,9 @@ src/
 - Seleccionar dos equipos guardados para el combate
 - Resultados de batalla con desglose de rondas
 - Editar o eliminar equipos desde la pantalla de batalla
+
+### Responsive
+- La web es totalmente responsive y está optimizada para dispositivos móviles
 
 ### Siguientes pasos
 - Hacer que el resultado de la batalla no sea directo, si no con control de turnos
